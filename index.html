@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>How to make a Mario-style platformer with Phaser 3</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
-        
-        <script type="text/javascript" src="src/scenes/phaser.js"></script>
-        <script type="text/javascript" src="src/scenes/main.js"></script>
-        
-        <style>
-            body {
-                background: #f1f1f1;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;     
-            }
-        </style>
-    </head>
-    <body>        
-    </body>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A vingança do plankton</title>
+  <style>
+    /* Remove margens e fundo preto para o canvas ficar centrado */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1a1a2e;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+  <!-- Phaser 3 carregado via CDN (versão 3.80) -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+
+  <!-- Ficheiros de cenas (ordem importa: main.js regista todas) -->
+  <script src="src/languages/translations.js"></script>
+  <script src="src/scenes/BootScene.js"></script>
+  <script src="src/scenes/PreloadScene.js"></script>
+  <script src="src/scenes/MenuScene.js"></script>
+  <script src="src/scenes/GameScene.js"></script>
+  <script src="src/scenes/GameOverScene.js"></script>
+  <script src="src/scenes/VictoryScene.js"></script>
+  <script src="src/main.js"></script>
+</body>
 </html>
