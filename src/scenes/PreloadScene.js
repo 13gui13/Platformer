@@ -32,14 +32,16 @@ class PreloadScene extends Phaser.Scene {
       loadText.setText("Pronto!");
     });
 
-    this.load.image("player", "assets/plankton.png");
-    this.load.image("coin", "assets/krabby.png");
+    //this.load.image("player", "assets/plankton.png");
+    //this.load.image("coin", "assets/krabby.png");
     //this.load.image("inimigos", "assets/spongebob.png")
   }
 
   create() {
     //cria texturas atraves dos graficos do phaser
+    this._criarTexturaJogador();
     this._criarTexturaPlataforma();
+    this._criarTexturaMoeda();
     this._criarTexturaInimigo();
     this._criarTexturaFundo();
     this._criarTexturaEspinho();
@@ -48,6 +50,38 @@ class PreloadScene extends Phaser.Scene {
 
     // Avançar para o menu
     this.scene.start("MenuScene");
+  }
+
+  _criarTexturaJogador() {
+    const g = this.make.graphics({ x: 0, y: 0, add: false });
+
+    // Corpo principal
+    g.fillStyle(0x4488ff);
+    g.fillRoundedRect(0, 0, 32, 40, 6);
+
+    // Olho esquerdo
+    g.fillStyle(0xffffff);
+    g.fillCircle(10, 14, 5);
+    g.fillStyle(0x000044);
+    g.fillCircle(11, 14, 3);
+
+    // Olho direito
+    g.fillStyle(0xffffff);
+    g.fillCircle(22, 14, 5);
+    g.fillStyle(0x000044);
+    g.fillCircle(23, 14, 3);
+
+    // Boca
+    g.fillStyle(0xffffff);
+    g.fillRect(10, 26, 12, 3);
+
+    // Pés
+    g.fillStyle(0x2244aa);
+    g.fillRect(2, 34, 10, 6);
+    g.fillRect(20, 34, 10, 6);
+
+    g.generateTexture("player", 32, 40);
+    g.destroy();
   }
 
 _criarTexturaPlataforma(){
@@ -66,6 +100,31 @@ _criarTexturaPlataforma(){
   g.strokeRect(0, 0, 32, 16);
   g.lineBetween(16, 6, 16, 16);
 }
+
+ _criarTexturaMoeda() {
+    const g = this.make.graphics({ x: 0, y: 0, add: false });
+
+    // Sombra
+    g.fillStyle(0xaa7700, 0.5);
+    g.fillCircle(13, 13, 10);
+
+    // Corpo da moeda
+    g.fillStyle(0xffdd00);
+    g.fillCircle(12, 12, 10);
+
+    // Brilho
+    g.fillStyle(0xffff88);
+    g.fillCircle(9, 9, 4);
+
+    // Símbolo "$"
+    g.fillStyle(0xaa7700);
+    g.fillRect(10, 6, 4, 12);
+    g.fillRect(7, 9, 10, 3);
+    g.fillRect(7, 14, 10, 3);
+
+    g.generateTexture("coin", 24, 24);
+    g.destroy();
+ }
 
   _criarTexturaInimigo(){
   const g = this.make.graphics({ x: 0, y: 0, add: false });
