@@ -36,10 +36,10 @@ class GameScene extends Phaser.Scene {
     this._criarMoedas();
     this._criarInimigos();
     this._criarJogador();
-    //this._criarBandeira();
-    //this._criarHUD();
-    //this._configurarFisica();
-    //this._configurarInput();
+    this._criarBandeira();
+    this._criarHUD();
+    this._configurarFisica();
+    this._configurarInput();
  
     // Câmara segue o jogador (com lerp suave)
     this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
@@ -61,10 +61,10 @@ class GameScene extends Phaser.Scene {
     // Não processa input se o jogador está morto
     if (!this.isAlive) return;
  
-    //this._moverJogador();
-    //this._atualizarInimigos();
-    //this._verificarQueda();
-    //this._atualizarHUD();
+    this._moverJogador();
+    this._atualizarInimigos();
+    this._verificarQueda();
+    this._atualizarHUD();
   }
 
     _criarPlataformas() {
@@ -174,8 +174,7 @@ _criarEspinhos() {
       enemy.setVelocityX(vel);     // começa a mover para a direita
     });
   }
- 
-  /** Cria o sprite do jogador */
+
   _criarJogador() {
     // Posição inicial: acima do chão no início do nível
     this.player = this.physics.add.sprite(100, 420, "player");
@@ -189,5 +188,201 @@ _criarEspinhos() {
     // Propriedade custom: quantos saltos ainda pode fazer (double jump)
     this.player.jumpsLeft = 2;
   }
+
+    _criarBandeira() {
+    // A bandeira fica perto do fim do mapa
+    this.flag = this.physics.add.staticImage(1560, 420, "flag");
+    this.flag.setSize(20, 60);
+  }
+
+    _criarHUD() { 
+    const style = { fontSize: "16px", fill: "#ffffff", stroke: "#000000", strokeThickness: 3 };
+ 
+    // Fundo semitransparente para os textos
+    this.hudBg = this.add.rectangle(400, 18, 800, 34, 0x000033, 0.6)
+      .setScrollFactor(0);
+ 
+    // Pontuação
+    this.scoreLabel = this.add.text(10, 5, t("score") + ":", style).setScrollFactor(0);
+    this.scoreValue = this.add.text(80, 5, "0", { ...style, fill: "#ffdd44" }).setScrollFactor(0);
+ 
+    // Vidas
+    this.livesLabel = this.add.text(160, 5, t("lives") + ":", style).setScrollFactor(0);
+    this.livesValue = this.add.text(220, 5, "❤❤❤", { ...style, fill: "#ff5555", fontSize: "14px" }).setScrollFactor(0);
+ 
+    // Moedas
+    this.coinsLabel = this.add.text(330, 5, t("coins") + ":", style).setScrollFactor(0);
+    this.coinsValue = this.add.text(400, 5, "0 / " + this.totalCoins, { ...style, fill: "#ffdd00" }).setScrollFactor(0);
+ 
+    // Nível
+    this.levelLabel = this.add.text(520, 5, t("level") + ":", style).setScrollFactor(0);
+    this.levelValue = this.add.text(570, 5, "" + this.currentLevel, { ...style, fill: "#88ffaa" }).setScrollFactor(0);
+ 
+    // Dica de teclas (canto superior direito)
+    this.add.text(620, 5, "R:reiniciar  M:menu", {
+      fontSize: "11px", fill: "#aaaaaa"
+    }).setScrollFactor(0);
+  }
+
+  _configurarFisica() {
+    // collider: objetos colidem (param físico — empurram-se)
+    this.physics.add.collider(this.player, this.platforms);
+    this.physics.add.collider(this.enemies, this.platforms);
+ 
+    // Inimigos não atravessam outros inimigos
+    this.physics.add.collider(this.enemies, this.enemies);
+ 
+    // overlap: detecta sobreposição mas NÃO cria reação física
+    // É o método correto para apanhar moedas, tocar em inimigos, etc.
+ 
+    // Jogador apanha moeda
+    this.physics.add.overlap(
+      this.player,
+      this.coins,
+      this._apanharMoeda,  // callback quando há overlap
+      null,                 // processCallback (null = sempre ativa)
+      this                  // contexto (this) para o callback
+    );
+ 
+    // Jogador toca em inimigo
+    this.physics.add.overlap(
+      this.player,
+      this.enemies,
+      this._tocarInimigo,
+      null,
+      this
+    );
+ 
+    // Jogador toca em espinho
+    this.physics.add.overlap(
+      this.player,
+      this.spikes,
+      this._tocarEspinho,
+      null,
+      this
+    );
+ 
+    // Jogador alcança a bandeira
+    this.physics.add.overlap(
+      this.player,
+      this.flag,
+      this._alcancarBandeira,
+      null,
+      this
+    );
+  }
+
+  _configurarInput() {
+    // createCursorKeys() cria as 4 setas + shift + space
+    this.cursors  = this.input.keyboard.createCursorKeys();
+    this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+ 
+    // Reset dos saltos quando o jogador pousa numa plataforma
+    this.player.body.onFloor = true;
+  }
+ _moverJogador() {
+    const onGround = this.player.body.blocked.down; // está no chão?
+ 
+    // Repõe saltos quando toca no chão
+    if (onGround) {
+      this.player.jumpsLeft = 2;
+    }
+ 
+    // Movimento horizontal
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-220);   // move para a esquerda
+      this.player.setFlipX(true);       // vira o sprite
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(220);    // move para a direita
+      this.player.setFlipX(false);
+    } else {
+      // Sem input → desacelera (atrito)
+      this.player.setVelocityX(0);
+    }
+
+    // Phaser.Input.Keyboard.JustDown garante que só ativa UMA VEZ
+    const jumpPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up)
+                     || Phaser.Input.Keyboard.JustDown(this.spaceKey);
+ 
+    if (jumpPressed && this.player.jumpsLeft > 0) {
+      this.player.setVelocityY(-520);  // impulso vertical (negativo = para cima)
+      this.player.jumpsLeft--;          // gasta um salto
+      this._tocarSom("jump");
+    }
+ 
+    // Efeito visual: escala ao saltar
+    if (!onGround) {
+      // No ar: estica um pouco verticalmente
+      this.player.setScale(0.9, 1.1);
+    } else {
+      this.player.setScale(1, 1);
+    }
+  }
+
+_atualizarInimigos() {
+    this.enemies.children.entries.forEach(enemy => {
+      const vel = enemy.body.velocity.x;
+ 
+      // Inverte direção quando chega aos limites da patrulha
+      if (enemy.x <= enemy.patrolLeft && vel < 0) {
+        enemy.setVelocityX(-vel);       // inverte
+        enemy.setFlipX(false);
+      } else if (enemy.x >= enemy.patrolRight && vel > 0) {
+        enemy.setVelocityX(-vel);       // inverte
+        enemy.setFlipX(true);
+      }
+    });
+  }
+
+   _verificarQueda() {
+    if (this.player.y > 520) {
+      // Caiu para fora do mapa = morre
+      this._jogadorMorre();
+    }
+  }
+
+    _atualizarHUD() {
+    const score = this.registry.get("score");
+    const lives = this.registry.get("lives");
+ 
+    this.scoreValue.setText("" + score);
+    this.coinsValue.setText(this.coinCount + " / " + this.totalCoins);
+ 
+    // Corações para mostrar vidas
+    const hearts = "❤".repeat(Math.max(0, lives)) + "♡".repeat(Math.max(0, 3 - lives));
+    this.livesValue.setText(hearts);
+  }
+
+  _apanharMoeda(player, coin) {
+
+  }
+
+  _tocarInimigo(player, enemy) {
+
+  }
+
+    _tocarEspinho() {
+
+  }
+
+  _alcancarBandeira() {
+
+  }
+
+  _jogadorMorre() {
+
+  }
+
+   _alcancarVitoria() {
+
+  }
+
+  _mostrarTextoFlutuante(x, y, mensagem, cor = "#ffffff") {
+
+  }
+
+  _tocarSom(tipo) {
+    
+}
 
 }
