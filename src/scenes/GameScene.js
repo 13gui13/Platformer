@@ -354,35 +354,228 @@ _atualizarInimigos() {
   }
 
   _apanharMoeda(player, coin) {
-
+    // Desativa a moeda (remove do jogo sem destruir de imediato)
+    coin.destroy();
+    this.coinCount++;
+ 
+    // Adiciona pontos
+    const score = this.registry.get("score");
+    this.registry.set("score", score + 100);
+ 
+    // Som de moeda
+    this._tocarSom("coin");
+ 
+    // Efeito visual: texto flutuante "+100"
+    this._mostrarTextoFlutuante(player.x, player.y - 20, "+100", "#ffdd00");
+ 
+    // Verifica se recolheu todas as moedas → vitória!
+    if (this.coinCount >= this.totalCoins) {
+      this._alcancarVitoria();
+    }
   }
 
   _tocarInimigo(player, enemy) {
-
+     if (!this.isAlive) return;
+ 
+    // Se o jogador está a cair em cima do inimigo = mata o inimigo
+    const playerFalling = player.body.velocity.y > 0;
+    const playerAbove   = player.y < enemy.y - 10;
+ 
+    if (playerFalling && playerAbove) {
+      // Mata o inimigo
+      this._tocarSom("stomp");
+      this._mostrarTextoFlutuante(enemy.x, enemy.y - 20, "+200", "#ff8844");
+ 
+      // Tween de morte do inimigo (encolhe e desaparece)
+      this.tweens.add({
+        targets: enemy,
+        scaleY: 0,
+        duration: 200,
+        onComplete: () => enemy.destroy()
+      });
+ 
+      // Bounce do jogador ao pisar o inimigo
+      player.setVelocityY(-350);
+ 
+      // Bónus de pontuação
+      this.registry.set("score", this.registry.get("score") + 200);
+ 
+    } else {
+      // Inimigo toca no jogador de lado = jogador perde 1 vida
+      this._jogadorMorre();
+    }
   }
 
     _tocarEspinho() {
-
+    if (!this.isAlive) return;
+    this._jogadorMorre();
   }
 
   _alcancarBandeira() {
-
+    this._alcancarVitoria();
   }
 
   _jogadorMorre() {
-
+    if (!this.isAlive) return; // evita morte dupla
+    this.isAlive = false;
+ 
+    this._tocarSom("death");
+ 
+    // Efeito visual: jogador pisca vermelho e cai
+    this.player.setTint(0xff0000);
+    this.player.setVelocityY(-300);  // pequeno salto de morte
+    this.player.setVelocityX(0);
+ 
+    // Diminui vidas
+    const lives = this.registry.get("lives") - 1;
+    this.registry.set("lives", lives);
+ 
+    // Aguarda 800ms e verifica se tem mais vidas
+    this.time.delayedCall(800, () => {
+      if (lives <= 0) {
+        // Sem vidas → Game Over
+        this.cameras.main.fade(500, 0, 0, 0); // efeito de fade a preto
+        this.time.delayedCall(500, () => {
+          this.scene.start("GameOverScene");
+        });
+      } else {
+        // Reinicia o nível com as vidas restantes
+        this.scene.restart();
+      }
+    });
   }
 
    _alcancarVitoria() {
-
+    if (!this.isAlive) return;
+    this.isAlive = false;
+ 
+    this._tocarSom("win");
+ 
+    // Efeito de flash branco
+    this.cameras.main.flash(300, 255, 255, 100);
+ 
+    // Texto de nível completo
+    const cx = this.cameras.main.scrollX + 400;
+    const cy = this.cameras.main.scrollY + 250;
+ 
+    this.add.text(cx, cy, t("complete"), {
+      fontSize: "42px",
+      fill: "#ffdd00",
+      stroke: "#000000",
+      strokeThickness: 6
+    }).setOrigin(0.5);
+ 
+    // Aguarda 1.5s e vai para ecrã de vitória
+    this.time.delayedCall(1500, () => {
+      this.cameras.main.fade(500, 255, 255, 255);
+      this.time.delayedCall(500, () => {
+        this.scene.start("VictoryScene");
+      });
+    });
   }
 
   _mostrarTextoFlutuante(x, y, mensagem, cor = "#ffffff") {
-
+    const txt = this.add.text(x, y, mensagem, {
+      fontSize: "18px",
+      fill: cor,
+      stroke: "#000000",
+      strokeThickness: 3,
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+ 
+    this.tweens.add({
+      targets: txt,
+      y: y - 50,          // sobe
+      alpha: 0,           // desaparece
+      duration: 800,
+      ease: "Power2",
+      onComplete: () => txt.destroy()
+    });
   }
 
   _tocarSom(tipo) {
-    
-}
-
+     try {
+      // Cria o AudioContext apenas quando necessário (requer interação do utilizador)
+      if (!this.audioCtx) {
+        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      const ctx = this.audioCtx;
+ 
+      // Configuração de cada tipo de som
+      const sons = {
+        jump: () => {
+          // Som de salto: tono crescente rápido
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.type = "square";
+          osc.frequency.setValueAtTime(300, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.1);
+          gain.gain.setValueAtTime(0.15, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.15);
+          osc.start(); osc.stop(ctx.currentTime + 0.15);
+        },
+        coin: () => {
+          // Som de moeda: dois tons rápidos ascendentes
+          [700, 1000].forEach((freq, i) => {
+            const osc  = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.type = "sine";
+            osc.frequency.value = freq;
+            const t0 = ctx.currentTime + i * 0.08;
+            gain.gain.setValueAtTime(0.2, t0);
+            gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.1);
+            osc.start(t0); osc.stop(t0 + 0.1);
+          });
+        },
+        stomp: () => {
+          // Som de pisar inimigo: ruído percussivo descendente
+          const osc  = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain); gain.connect(ctx.destination);
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(400, ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.25, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+          osc.start(); osc.stop(ctx.currentTime + 0.2);
+        },
+        death: () => {
+          // Som de morte: descida dramática de tons
+          [400, 300, 200, 100].forEach((freq, i) => {
+            const osc  = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.type = "sawtooth";
+            osc.frequency.value = freq;
+            const t0 = ctx.currentTime + i * 0.1;
+            gain.gain.setValueAtTime(0.2, t0);
+            gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.1);
+            osc.start(t0); osc.stop(t0 + 0.12);
+          });
+        },
+        win: () => {
+          // Som de vitória: fanfarra ascendente
+          [523, 659, 784, 1047].forEach((freq, i) => {
+            const osc  = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.type = "sine";
+            osc.frequency.value = freq;
+            const t0 = ctx.currentTime + i * 0.12;
+            gain.gain.setValueAtTime(0.25, t0);
+            gain.gain.exponentialRampToValueAtTime(0.001, t0 + 0.2);
+            osc.start(t0); osc.stop(t0 + 0.22);
+          });
+        }
+      };
+      // Executa o gerador de som correspondente
+      if (sons[tipo]) sons[tipo]();
+ 
+    } catch(e) {
+      // Web Audio pode falhar em alguns contextos — ignora silenciosamente
+      console.warn("Erro no áudio:", e);
+    }
+  }
 }

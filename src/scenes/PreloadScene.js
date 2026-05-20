@@ -38,7 +38,7 @@ class PreloadScene extends Phaser.Scene {
   }
 
   create() {
-    //cria texturas atraves dos graficos do phaser
+    // cria texturas atraves dos graficos do phaser
     this._criarTexturaJogador();
     this._criarTexturaPlataforma();
     this._criarTexturaMoeda();
@@ -55,7 +55,7 @@ class PreloadScene extends Phaser.Scene {
   _criarTexturaJogador() {
     const g = this.make.graphics({ x: 0, y: 0, add: false });
 
-    // Corpo principal
+    // Corpo
     g.fillStyle(0x4488ff);
     g.fillRoundedRect(0, 0, 32, 40, 6);
 
@@ -87,15 +87,15 @@ class PreloadScene extends Phaser.Scene {
 _criarTexturaPlataforma(){
   const g = this.make.graphics({x: 0, y: 0, add:false});
 
-  //fundo da plataforma
+  // Fundo da plataforma
   g.fillStyle(0x228833);
   g.fillRect(0, 0, 32, 16);
 
-  //relva
+  // Relva
   g.fillStyle(0x44bb55);
   g.fillRect(0, 0, 32, 6);
 
-  //tijolos
+  // Tijolos
   g.lineStyle(1, 0x115522, 0.5);
   g.strokeRect(0, 0, 32, 16);
   g.lineBetween(16, 6, 16, 16);
@@ -164,7 +164,7 @@ _criarTexturaPlataforma(){
   _criarTexturaFundo(){
   const g = this.make.graphics({ x: 0, y: 0, add: false });
 
-    // Céu (gradiente simulado com bandas)
+    // Céu
     const cores = [0x0a0a1e, 0x0d1030, 0x111545, 0x1a1f5e];
     const alturas = [0, 125, 250, 375];
     cores.forEach((cor, i) => {
@@ -172,7 +172,7 @@ _criarTexturaPlataforma(){
       g.fillRect(0, alturas[i], 800, 125);
     });
 
-    // Estrelas (pontos brancos aleatórios com semente fixa)
+    // Estrelas
     const estrelas = [
       [80,30],[200,60],[350,20],[500,50],[650,35],[720,80],
       [120,100],[280,90],[420,70],[580,110],[740,40],[60,140],
@@ -181,7 +181,7 @@ _criarTexturaPlataforma(){
     g.fillStyle(0xffffff);
     estrelas.forEach(([x, y]) => g.fillCircle(x, y, 1.5));
 
-    // Chão (terra escura no fundo)
+    // Chão
     g.fillStyle(0x0a0a0a);
     g.fillRect(0, 460, 800, 40);
 
