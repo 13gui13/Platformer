@@ -24,11 +24,15 @@ class GameScene extends Phaser.Scene {
  
     // Imagem de Fundo
     this.add.image(400, 250, "background");
+    this.add.image(1200, 250, "background");  // segunda metade
+
+    //this.add.tileSprite(0, 0, 1600, 500, "background")
+    //.setOrigin(0, 0);
  
     // Câmara segue o jogador
     // O mundo tem 1600px de largura, o canvas apenas 800px
     this.cameras.main.setBounds(0, 0, 1600, 500);
-    this.physics.world.setBounds(0, 0, 1600, 500);
+    this.physics.world.setBounds(0, 0, 1600, 600);
  
     // Criar elementos do nível
     this._criarPlataformas();
@@ -134,7 +138,7 @@ _criarEspinhos() {
  
     posicoes.forEach(([x, y]) => {
       const coin = this.coins.create(x, y, "coin");
-      coin.setSize(18, 18); // hitbox ligeiramente menor que o sprite
+      coin.setSize(28, 28); // hitbox ligeiramente menor que o sprite
  
       // Animação de flutuação na moeda (tween)
       this.tweens.add({
@@ -176,18 +180,17 @@ _criarEspinhos() {
   }
 
   _criarJogador() {
-    // Posição inicial: acima do chão no início do nível
-    this.player = this.physics.add.sprite(100, 420, "player");
- 
-    this.player.setBounce(0.1);            // pequeno ricochete ao pousar
-    this.player.setCollideWorldBounds(true); // não sai do mundo
-    this.player.setGravityY(0);            // usa a gravidade global (definida em main.js)
-    this.player.setSize(26, 36);           // hitbox ligeiramente menor que o sprite
-    this.player.setOffset(3, 4);           // centraliza hitbox no sprite
- 
-    // Propriedade custom: quantos saltos ainda pode fazer (double jump)
-    this.player.jumpsLeft = 2;
-  }
+  this.player = this.physics.add.sprite(100, 420, "player");
+
+  this.player.setBounce(0.1);
+  this.player.setCollideWorldBounds(true); // bloqueia todos os lados incluindo baixo
+  this.player.setGravityY(0);
+  this.player.setDisplaySize(40, 52);
+  this.player.setSize(26, 36);
+  this.player.setOffset(3, 12);
+
+  this.player.jumpsLeft = 2;
+}
 
     _criarBandeira() {
     // A bandeira fica perto do fim do mapa
@@ -334,12 +337,12 @@ _atualizarInimigos() {
     });
   }
 
-   _verificarQueda() {
-    if (this.player.y > 520) {
-      // Caiu para fora do mapa = morre
-      this._jogadorMorre();
-    }
+  _verificarQueda() {
+  // blocked.down com o mundo = chegou ao fundo do canvas
+  if (this.player.body.blocked.down && this.player.y > 550) {
+    this._jogadorMorre();
   }
+}
 
     _atualizarHUD() {
     const score = this.registry.get("score");

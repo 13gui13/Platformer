@@ -1,16 +1,10 @@
-// =============================================================
-// Ficheiro com as strings para as diferentes linguas.
-// Suporta Português (pt), Inglês (en) e Turco (tr) como dito no enunciado.
-// Estrutura: objeto global com chave de língua → chaves de texto.
-// =============================================================
-
 const TRANSLATIONS = {
 
   // ── Português ────────────────────────────────────────────────
   pt: {
     // Menu principal
-    title:          "Sky Jumper",
-    subtitle:       "Um jogo de plataformas",
+    title:          "Plankton",
+    subtitle:       "A vingança do Plankton",
     play:           "JOGAR",
     language:       "Idioma: PT",
     controls_title: "Controlos",
@@ -38,8 +32,8 @@ const TRANSLATIONS = {
   // ── English ──────────────────────────────────────────────────
   en: {
     // Main menu
-    title:          "Sky Jumper",
-    subtitle:       "A platformer game",
+    title:          "Plankton",
+    subtitle:       "Plankton's revenge",
     play:           "PLAY",
     language:       "Language: EN",
     controls_title: "Controls",

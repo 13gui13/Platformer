@@ -19,8 +19,8 @@ const config = {
     PreloadScene,   // 2. Carrega todos os assets
     MenuScene,      // 3. Menu principal com opcao de escolher lingua
     GameScene,      // 4. Jogo
-    //GameOverScene,  // 5. Ecrã de fim de jogo
-    //VictoryScene    // 6. Ecrã de vitória
+    GameOverScene,  // 5. Ecrã de fim de jogo
+    VictoryScene    // 6. Ecrã de vitória
   ],
 
   // Onde o canvas será inserido

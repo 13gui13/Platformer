@@ -52,37 +52,59 @@ class PreloadScene extends Phaser.Scene {
     this.scene.start("MenuScene");
   }
 
-  _criarTexturaJogador() {
-    const g = this.make.graphics({ x: 0, y: 0, add: false });
+_criarTexturaJogador() {
+  const g = this.make.graphics({ x: 0, y: 0, add: false });
 
-    // Corpo
-    g.fillStyle(0x4488ff);
-    g.fillRoundedRect(0, 0, 32, 40, 6);
+  // Corpo oval verde escuro
+  g.fillStyle(0x2d5a1b);
+  g.fillEllipse(20, 32, 28, 22);
 
-    // Olho esquerdo
-    g.fillStyle(0xffffff);
-    g.fillCircle(10, 14, 5);
-    g.fillStyle(0x000044);
-    g.fillCircle(11, 14, 3);
+  // Cabeça oval verde mais claro
+  g.fillStyle(0x4a8c2a);
+  g.fillEllipse(20, 16, 26, 22);
 
-    // Olho direito
-    g.fillStyle(0xffffff);
-    g.fillCircle(22, 14, 5);
-    g.fillStyle(0x000044);
-    g.fillCircle(23, 14, 3);
+  // Antena no topo
+  g.lineStyle(2, 0x2d5a1b);
+  g.lineBetween(20, 5, 24, 0);
+  g.fillStyle(0x1a3a0a);
+  g.fillCircle(24, 0, 2);
 
-    // Boca
-    g.fillStyle(0xffffff);
-    g.fillRect(10, 26, 12, 3);
+  // Olho grande único (Plankton tem só um olho)
+  g.fillStyle(0xffffff);
+  g.fillCircle(20, 15, 8);
+  // Íris vermelha
+  g.fillStyle(0xcc0000);
+  g.fillCircle(21, 15, 5);
+  // Pupila preta
+  g.fillStyle(0x000000);
+  g.fillCircle(22, 15, 3);
+  // Brilho
+  g.fillStyle(0xffffff);
+  g.fillCircle(20, 12, 1.5);
 
-    // Pés
-    g.fillStyle(0x2244aa);
-    g.fillRect(2, 34, 10, 6);
-    g.fillRect(20, 34, 10, 6);
+  // Sobrancelha zangada
+  g.lineStyle(2, 0x1a3a0a);
+  g.lineBetween(13, 7, 27, 9);
 
-    g.generateTexture("player", 32, 40);
-    g.destroy();
-  }
+  // Boca maléfica
+  g.lineStyle(2, 0x1a3a0a);
+  g.lineBetween(14, 23, 26, 23);
+  g.lineBetween(26, 23, 28, 21); // canto levantado
+
+  // Pernas finas
+  g.lineStyle(2, 0x2d5a1b);
+  g.lineBetween(12, 40, 8,  48);
+  g.lineBetween(16, 42, 13, 50);
+  g.lineBetween(24, 42, 27, 50);
+  g.lineBetween(28, 40, 32, 48);
+
+  // Braços
+  g.lineBetween(8,  28, 2,  22);
+  g.lineBetween(32, 28, 38, 22);
+
+  g.generateTexture("player", 40, 52);
+  g.destroy();
+}
 
 _criarTexturaPlataforma(){
   const g = this.make.graphics({x: 0, y: 0, add:false});
@@ -102,29 +124,46 @@ _criarTexturaPlataforma(){
 }
 
  _criarTexturaMoeda() {
-    const g = this.make.graphics({ x: 0, y: 0, add: false });
+  const g = this.make.graphics({ x: 0, y: 0, add: false });
 
-    // Sombra
-    g.fillStyle(0xaa7700, 0.5);
-    g.fillCircle(13, 13, 10);
+  // Pão de baixo (semicírculo bege)
+  g.fillStyle(0xc8860a);
+  g.fillEllipse(18, 26, 32, 14);
 
-    // Corpo da moeda
-    g.fillStyle(0xffdd00);
-    g.fillCircle(12, 12, 10);
+  // Hamburguer — camadas de baixo para cima:
 
-    // Brilho
-    g.fillStyle(0xffff88);
-    g.fillCircle(9, 9, 4);
+  // Carne (castanho escuro)
+  g.fillStyle(0x6b3a2a);
+  g.fillEllipse(18, 22, 30, 10);
 
-    // Símbolo "$"
-    g.fillStyle(0xaa7700);
-    g.fillRect(10, 6, 4, 12);
-    g.fillRect(7, 9, 10, 3);
-    g.fillRect(7, 14, 10, 3);
+  // Alface (verde)
+  g.fillStyle(0x4aaa33);
+  g.fillEllipse(18, 18, 32, 8);
+  // folhas irregulares
+  g.fillEllipse(8,  17, 10, 6);
+  g.fillEllipse(28, 17, 10, 6);
 
-    g.generateTexture("coin", 24, 24);
-    g.destroy();
- }
+  // Queijo (amarelo)
+  g.fillStyle(0xffcc00);
+  g.fillRect(6, 15, 24, 5);
+
+  // Pão de cima (semicírculo castanho dourado)
+  g.fillStyle(0xd4901a);
+  g.fillEllipse(18, 12, 30, 18);
+
+  // Brilho do pão
+  g.fillStyle(0xf0b030, 0.6);
+  g.fillEllipse(14, 8, 14, 7);
+
+  // Sementes de sésamo
+  g.fillStyle(0xffffff);
+  g.fillEllipse(12, 10, 4, 2);
+  g.fillEllipse(20, 7,  4, 2);
+  g.fillEllipse(26, 11, 4, 2);
+
+  g.generateTexture("coin", 36, 36);
+  g.destroy();
+}
 
   _criarTexturaInimigo(){
   const g = this.make.graphics({ x: 0, y: 0, add: false });

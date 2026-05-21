@@ -105,7 +105,7 @@ class MenuScene extends Phaser.Scene {
     // Estrelas a cair decorativas
     this._criarEstrelasAnimadas();
   }
-/** Renderiza todos os textos com a nova língua */
+// Renderiza todos os textos com a nova língua 
   _atualizarTextos() {
     this.titleText.setText(t("title"));
     this.subtitleText.setText(t("subtitle"));
@@ -117,7 +117,7 @@ class MenuScene extends Phaser.Scene {
     this.langText.setText(t("language"));
   }
 
-  /** Partículas decorativas no menu */
+  // Partículas decorativas no menu
   _criarEstrelasAnimadas() {
     // Cria pequenos pontos que flutuam para cima
     for (let i = 0; i < 15; i++) {
@@ -142,7 +142,7 @@ class MenuScene extends Phaser.Scene {
     }
   }
 
-  /** Som de clique simples via Web Audio */
+  // Som de clique simples via Web Audio 
   _tocarSomClick() {
     try {
       const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -155,6 +155,6 @@ class MenuScene extends Phaser.Scene {
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.1);
       osc.start(ctx.currentTime);
       osc.stop(ctx.currentTime + 0.1);
-    } catch(e) { /* Browser pode bloquear sem interação */ }
+    } catch(e) {} //Browser pode bloquear sem interação  
   }
 }
