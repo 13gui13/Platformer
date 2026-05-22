@@ -280,6 +280,13 @@ _criarEspinhos() {
     this.cursors  = this.input.keyboard.createCursorKeys();
     this.spaceKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
  
+    const KeyCodes = Phaser.Input.Keyboard.KeyCodes;
+    this.wasd = {
+      up:    this.input.keyboard.addKey(KeyCodes.W),
+      left:  this.input.keyboard.addKey(KeyCodes.A),
+      down:  this.input.keyboard.addKey(KeyCodes.S),
+      right: this.input.keyboard.addKey(KeyCodes.D),
+    }
     // Reset dos saltos quando o jogador pousa numa plataforma
     this.player.body.onFloor = true;
   }
@@ -292,10 +299,10 @@ _criarEspinhos() {
     }
  
     // Movimento horizontal
-    if (this.cursors.left.isDown) {
+    if (this.cursors.left.isDown || this.wasd.left.isDown) {
       this.player.setVelocityX(-220);   // move para a esquerda
       this.player.setFlipX(true);       // vira o sprite
-    } else if (this.cursors.right.isDown) {
+    } else if (this.cursors.right.isDown || this.wasd.right.isDown) {
       this.player.setVelocityX(220);    // move para a direita
       this.player.setFlipX(false);
     } else {
@@ -305,7 +312,8 @@ _criarEspinhos() {
 
     // Phaser.Input.Keyboard.JustDown garante que só ativa UMA VEZ
     const jumpPressed = Phaser.Input.Keyboard.JustDown(this.cursors.up)
-                     || Phaser.Input.Keyboard.JustDown(this.spaceKey);
+                     || Phaser.Input.Keyboard.JustDown(this.spaceKey)
+                     || Phaser.Input.Keyboard.JustDown(this.wasd.up);
  
     if (jumpPressed && this.player.jumpsLeft > 0) {
       this.player.setVelocityY(-520);  // impulso vertical (negativo = para cima)
