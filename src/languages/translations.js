@@ -1,6 +1,6 @@
 const TRANSLATIONS = {
 
-  // ── Português ────────────────────────────────────────────────
+  // Português
   pt: {
     // Menu principal
     title:          "Plankton",
@@ -29,7 +29,7 @@ const TRANSLATIONS = {
     complete:    "Completo!",
   },
 
-  // ── English ──────────────────────────────────────────────────
+  // English
   en: {
     // Main menu
     title:          "Plankton",
