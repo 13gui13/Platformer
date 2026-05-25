@@ -8,8 +8,8 @@ const TRANSLATIONS = {
     play:           "JOGAR",
     language:       "Idioma: PT",
     controls_title: "Controlos",
-    controls_move:  "← → : Mover",
-    controls_jump:  "↑ / ESPAÇO : Saltar",
+    controls_move:  "← → / A D: Mover",
+    controls_jump:  "↑ / ESPAÇO / W: Saltar",
     controls_restart:"R : Reiniciar",
 
     // HUD (interface dentro do jogo)
@@ -37,8 +37,8 @@ const TRANSLATIONS = {
     play:           "PLAY",
     language:       "Language: EN",
     controls_title: "Controls",
-    controls_move:  "← → : Move",
-    controls_jump:  "↑ / SPACE : Jump",
+    controls_move:  "← → / A D: Move",
+    controls_jump:  "↑ / SPACE / W: Jump",
     controls_restart:"R : Restart",
 
     // HUD
