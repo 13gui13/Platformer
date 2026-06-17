@@ -164,7 +164,7 @@ _criarEspinhos() {
       [1070, 220, 90, 1030, 1160],// área de dificuldade
       [1370, 200, 100, 1330, 1490],// final
     ];
- 
+
     config.forEach(([x, y, vel, limEsq, limDir]) => {
       const enemy = this.enemies.create(x, y, "enemy");
  

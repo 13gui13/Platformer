@@ -165,39 +165,80 @@ _criarTexturaPlataforma(){
   g.destroy();
 }
 
-  _criarTexturaInimigo(){
+_criarTexturaInimigo() {
   const g = this.make.graphics({ x: 0, y: 0, add: false });
 
-    // Corpo
-    g.fillStyle(0xdd2222);
-    g.fillRoundedRect(0, 0, 32, 28, 4);
+  // Sapatos pretos grandes e arredondados
+  g.fillStyle(0x111111);
+  g.fillEllipse(7,  26, 14, 7);
+  g.fillEllipse(25, 26, 14, 7);
 
-    // Olhos brancos
-    g.fillStyle(0xffffff);
-    g.fillCircle(9, 11, 5);
-    g.fillCircle(23, 11, 5);
+  // Meias brancas (pernas finas)
+  g.fillStyle(0xffffff);
+  g.fillRect(7,  20, 4, 8);
+  g.fillRect(21, 20, 4, 8);
 
-    // Pupilas vermelhas escuras
-    g.fillStyle(0x880000);
-    g.fillCircle(10, 11, 3);
-    g.fillCircle(24, 11, 3);
+  // Calças castanhas curtas
+  g.fillStyle(0x8B5E1A);
+  g.fillRect(5, 14, 22, 8);
+  g.fillStyle(0x222222);
+  g.fillRect(5, 13, 22, 2);   // cinto
+  g.fillStyle(0xffdd00);
+  g.fillRect(13, 13, 6, 2);   // fivela
 
-    // Sobrancelhas zangadas (linhas diagonais)
-    g.lineStyle(3, 0x550000);
-    g.lineBetween(5, 5, 13, 8);   // sobrancelha esquerda
-    g.lineBetween(19, 8, 27, 5);  // sobrancelha direita
+  // Corpo quadrado amarelo (esponja)
+  g.fillStyle(0xffdd44);
+  g.fillRect(3, 2, 26, 13);
 
-    // Boca zangada (arco para baixo)
-    g.fillStyle(0x550000);
-    g.fillRect(8, 20, 16, 3);
+  // Buracos da esponja
+  g.fillStyle(0xddaa22);
+  g.fillCircle(7,  5,  2);
+  g.fillCircle(14, 4,  2);
+  g.fillCircle(22, 6,  2);
+  g.fillCircle(6,  11, 2);
+  g.fillCircle(20, 11, 2);
+  g.fillCircle(27, 9,  2);
 
-    // Pés
-    g.fillStyle(0x880000);
-    g.fillRect(2, 24, 9, 4);
-    g.fillRect(21, 24, 9, 4);
+  // Camisa branca e gravata vermelha
+  g.fillStyle(0xffffff);
+  g.fillRect(9, 12, 14, 3);
+  g.fillStyle(0xdd2222);
+  g.fillTriangle(14, 12, 18, 12, 16, 20);
 
-    g.generateTexture("enemy", 32, 28);
-    g.destroy();
+  // Olhos grandes
+  g.fillStyle(0xffffff);
+  g.fillCircle(10, 7, 5);
+  g.fillCircle(22, 7, 5);
+  g.fillStyle(0x55aaff);
+  g.fillCircle(10, 7, 3);
+  g.fillCircle(22, 7, 3);
+  g.fillStyle(0x000000);
+  g.fillCircle(10, 7, 2);
+  g.fillCircle(22, 7, 2);
+  g.fillStyle(0xffffff);
+  g.fillCircle(11, 6, 1);   // brilho
+  g.fillCircle(23, 6, 1);
+
+  // Nariz
+  g.fillStyle(0xffaa22);
+  g.fillEllipse(16, 10, 4, 3);
+
+  // Sorriso com dois dentes
+  g.fillStyle(0xffffff);
+  g.fillRect(12, 13, 8, 3);
+  g.fillStyle(0xffdd44);
+  g.fillRect(16, 13, 1, 3);  // separação
+  g.fillStyle(0xff9944);
+  g.fillRect(11, 12, 10, 1); // lábio superior
+  g.fillRect(11, 16, 10, 1); // lábio inferior
+
+  // Sobrancelhas
+  g.fillStyle(0x886600);
+  g.fillRect(6,  2, 7, 2);
+  g.fillRect(19, 2, 7, 2);
+
+  g.generateTexture("enemy", 32, 28);
+  g.destroy();
 }
 
   _criarTexturaFundo(){
@@ -241,19 +282,100 @@ _criarTexturaPlataforma(){
     g.destroy();
 }
 
-  _criarTexturaBandeira(){
+_criarTexturaBandeira() {
   const g = this.make.graphics({ x: 0, y: 0, add: false });
 
-    // Poste
-    g.fillStyle(0xaaaaaa);
-    g.fillRect(8, 0, 4, 60);
+  // Base de madeira
+  g.fillStyle(0x6b4a1e);
+  g.fillRect(0, 100, 90, 8);
 
-    // Bandeira
-    g.fillStyle(0x44ff44);
-    g.fillTriangle(12, 5, 40, 15, 12, 30);
+  // Corpo principal arredondado (madeira castanha)
+  g.fillStyle(0x8B5E2A);
+  g.fillRect(8, 45, 74, 57);
+  g.fillStyle(0x9B6E3A);
+  g.fillEllipse(45, 45, 74, 30);  // topo arredondado
 
-    g.generateTexture("flag", 45, 60);
-    g.destroy();
+  // Musgo verde no topo
+  g.fillStyle(0x4a7a2a);
+  g.fillEllipse(45, 38, 70, 12);
+
+  // Tábuas horizontais
+  g.fillStyle(0x7a5222);
+  g.fillRect(8, 55, 74, 2);
+  g.fillRect(8, 65, 74, 2);
+  g.fillRect(8, 75, 74, 2);
+
+  // Rebites metálicos
+  g.fillStyle(0x888888);
+  g.fillCircle(55, 60, 3);
+  g.fillCircle(65, 60, 3);
+
+  // Chaminé
+  g.fillStyle(0x666666);
+  g.fillRect(40, 20, 10, 25);
+  g.fillStyle(0x888888);
+  g.fillRect(38, 18, 14, 5);
+
+  // Fumo
+  g.fillStyle(0xdddddd);
+  g.fillCircle(45, 13, 5);
+  g.fillCircle(42, 7,  4);
+  g.fillCircle(46, 2,  3);
+
+  // Janelas grandes azuladas
+  g.fillStyle(0xaaccee);
+  g.fillRect(10, 65, 28, 22);
+  g.fillRect(52, 65, 28, 22);
+  g.lineStyle(2, 0x6b4a1e);
+  g.strokeRect(10, 65, 28, 22);
+  g.strokeRect(52, 65, 28, 22);
+  g.lineStyle(1, 0x5588aa);
+  g.lineBetween(24, 65, 24, 87);
+  g.lineBetween(10, 76, 38, 76);
+  g.lineBetween(66, 65, 66, 87);
+  g.lineBetween(52, 76, 80, 76);
+
+  // Porta central
+  g.fillStyle(0x5a3a10);
+  g.fillRect(34, 72, 22, 30);
+  g.fillStyle(0x6b4a1e);
+  g.fillEllipse(45, 72, 22, 10);
+  g.fillStyle(0xffdd00);
+  g.fillCircle(53, 87, 2);  // maçaneta
+
+  // Bandeirinhas decorativas
+  g.lineStyle(1, 0x444444);
+  g.lineBetween(12, 58, 78, 58);
+  const flagColors = [
+    [15, 0xddaa00, 0xdd2222],
+    [28, 0x111111, 0xffdd00],
+    [41, 0x2244cc, 0xffffff],
+    [54, 0xdd2222, 0xffffff],
+    [67, 0xffdd00, 0x2244cc],
+  ];
+  flagColors.forEach(([x, c1, c2]) => {
+    g.fillStyle(c1);
+    g.fillTriangle(x, 58, x + 6, 58, x + 3, 65);
+    g.fillStyle(c2);
+    g.fillTriangle(x + 6, 58, x + 12, 58, x + 9, 65);
+  });
+
+  // Placa em forma de concha (canto superior esquerdo)
+  g.fillStyle(0xeeddcc);
+  g.fillEllipse(20, 22, 36, 24);
+  g.fillStyle(0xdd3311);
+  // "KK" na placa
+  g.fillRect(9,  16, 2, 8);
+  g.fillRect(11, 19, 3, 2);
+  g.fillRect(11, 16, 2, 3);
+  g.fillRect(11, 21, 2, 3);
+  g.fillRect(16, 16, 2, 8);
+  g.fillRect(18, 19, 3, 2);
+  g.fillRect(18, 16, 2, 3);
+  g.fillRect(18, 21, 2, 3);
+
+  g.generateTexture("flag", 90, 108);
+  g.destroy();
 }
 
   _criarSons(){

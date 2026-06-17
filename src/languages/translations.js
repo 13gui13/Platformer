@@ -57,8 +57,37 @@ const TRANSLATIONS = {
     level_label: "Level",
     complete:    "Complete!",
   },
-};
 
+
+// ── Turco ──────────────────────────────────────────────────
+  tr: {
+    // Ana menü
+    title:          "Sky Jumper",
+    subtitle:       "Bir platform oyunu",
+    play:           "OYNA",
+    language:       "Dil: TR",
+    controls_title: "Kontroller",
+    controls_move:  "← → / A D : Hareket",
+    controls_jump:  "↑ / SPACE / W : Zıpla",
+    controls_restart:"R : Yeniden Başlat",
+
+    // HUD
+    score:  "Skor",
+    lives:  "Can",
+    level:  "Seviye",
+    coins:  "Para",
+
+    // Durum mesajları
+    game_over:   "Oyun Bitti",
+    victory:     "Kazandınız!",
+    restart:     "R tuşuna basarak yeniden başlatın",
+    back_menu:   "M tuşuna basarak menüye dönün",
+    collected:   "Toplanan paralar",
+    next_level:  "Sonraki seviye...",
+    level_label: "Seviye",
+    complete:    "Tamamlandı!",
+  }
+};
 // Língua atual — começa em Português
 let currentLang = "pt";
 
@@ -79,6 +108,6 @@ function t(key) {
  * @returns {string} Nova língua ativa
  */
 function toggleLang() {
-  currentLang = currentLang === "pt" ? "en" : "pt";
+  currentLang = currentLang === "pt" ? "en" : currentLang === "en" ? "tr" : "pt";
   return currentLang;
 }
