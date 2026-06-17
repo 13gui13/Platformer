@@ -104,10 +104,10 @@ _criarEspinhos() {
  
     // Posições dos espinhos [x, y]
     const posicoes = [
-      [320, 466], [340, 466], [360, 466],  // buraco no chão
-      [680, 466], [700, 466],               // segundo buraco
-      [500, 366], [520, 366],               // em cima de plataforma
-      [960, 346], [980, 346],
+      [240, 454], [260, 454], [280, 454],  // buraco no chão
+      [660, 454], [680, 454],               // segundo buraco
+      [450, 274], [470, 274],               // em cima de plataforma
+      [960, 334], [980, 334],
     ];
  
     posicoes.forEach(([x, y]) => {
@@ -194,8 +194,8 @@ _criarEspinhos() {
 
     _criarBandeira() {
     // A bandeira fica perto do fim do mapa
-    this.flag = this.physics.add.staticImage(1560, 420, "flag");
-    this.flag.setSize(20, 60);
+    this.flag = this.physics.add.staticImage(1550, 410, "flag");
+    this.flag.setSize(60, 100);
   }
 
     _criarHUD() { 
