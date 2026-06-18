@@ -1,4 +1,4 @@
-# Plankton 🎮
+# Plankton
 
 Trabalho Prático 2 — Phaser 3 | Tecnologias Multimédia 2025/2026
 

@@ -121,6 +121,7 @@ _criarTexturaPlataforma(){
   g.lineStyle(1, 0x115522, 0.5);
   g.strokeRect(0, 0, 32, 16);
   g.lineBetween(16, 6, 16, 16);
+  g.destroy();
 }
 
  _criarTexturaMoeda() {
