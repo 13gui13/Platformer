@@ -62,7 +62,7 @@ const TRANSLATIONS = {
 // ── Turco ──────────────────────────────────────────────────
   tr: {
     // Ana menü
-    title:          "Sky Jumper",
+    title:          "Plankton",
     subtitle:       "Bir platform oyunu",
     play:           "OYNA",
     language:       "Dil: TR",
