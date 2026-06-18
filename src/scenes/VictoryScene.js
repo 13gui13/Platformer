@@ -79,6 +79,9 @@ class VictoryScene extends Phaser.Scene {
       });
 
       this.input.keyboard.on("keydown-M", () => {
+        this.registry.set("score", 0);
+        this.registry.set("lives", 3);
+        this.registry.set("level", 1);
         this.scene.start("MenuScene");
       });
     });

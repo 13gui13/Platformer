@@ -56,9 +56,8 @@ class GameOverScene extends Phaser.Scene {
       this.add.text(cx, cy + 70, t("restart"), {
         fontSize: "20px", fill: "#aaccff"
       }).setOrigin(0.5);
-
-      this.add.text(cx, cy + 100, t("back_menu"), {
-        fontSize: "20px", fill: "#aaccff"
+      this.add.text(cx, cy + 88, t("back_menu"), {
+        fontSize: "18px", fill: "#aaccff"
       }).setOrigin(0.5);
     });
 
@@ -74,6 +73,9 @@ class GameOverScene extends Phaser.Scene {
       });
 
       this.input.keyboard.on("keydown-M", () => {
+        this.registry.set("score", 0);
+        this.registry.set("lives", 3);
+        this.registry.set("level", 1);
         this.scene.start("MenuScene");
       });
     });

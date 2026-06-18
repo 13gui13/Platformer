@@ -59,6 +59,9 @@ class GameScene extends Phaser.Scene {
     // Tecla M — voltar ao menu
     this.input.keyboard.on("keydown-M", () => {
       this.scene.start("MenuScene");
+        this.registry.set("score", 0);
+        this.registry.set("lives", 3);
+        this.registry.set("level", 1);
     });
   }
   update() {
@@ -123,7 +126,7 @@ _criarEspinhos() {
     // Moedas espalhadas pelo mapa [x, y]
     const posicoes = [
       // Chão inicial
-      [100, 455], [200, 455],
+      [200, 455], [450, 455],
       // Plataformas
       [170, 355], [380, 275], [570, 355],
       [740, 255], [920, 335], [1070, 235],
