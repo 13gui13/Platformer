@@ -225,7 +225,7 @@ _criarEspinhos() {
     this.levelValue = this.add.text(570, 5, "" + this.currentLevel, { ...style, fill: "#88ffaa" }).setScrollFactor(0);
  
     // Dica de teclas (canto superior direito)
-    this.add.text(620, 5, "R:reiniciar  M:menu", {
+    this.add.text(620, 5, t("hud_restart") + "  " + t("hud_menu"), {
       fontSize: "11px", fill: "#aaaaaa"
     }).setScrollFactor(0);
   }

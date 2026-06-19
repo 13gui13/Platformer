@@ -17,6 +17,8 @@ const TRANSLATIONS = {
     lives:  "Vidas",
     level:  "Nível",
     coins:  "Moedas",
+    hud_restart: "R:reiniciar",
+    hud_menu:    "M:menu",
 
     // Mensagens de estado
     game_over:   "Fim de Jogo",
@@ -46,6 +48,8 @@ const TRANSLATIONS = {
     lives:  "Lives",
     level:  "Level",
     coins:  "Coins",
+    hud_restart: "R:restart",
+    hud_menu:    "M:menu",
 
     // State messages
     game_over:   "Game Over",
@@ -76,6 +80,8 @@ const TRANSLATIONS = {
     lives:  "Can",
     level:  "Seviye",
     coins:  "Para",
+    hud_restart: "R:tekrar başlat",
+    hud_menu:    "M:menü",
 
     // Durum mesajları
     game_over:   "Oyun Bitti",
